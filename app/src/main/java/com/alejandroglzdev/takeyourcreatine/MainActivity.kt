@@ -6,36 +6,32 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.capitalize
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.alejandroglzdev.takeyourcreatine.ui.theme.Secondary
+import com.alejandroglzdev.takeyourcreatine.ui.theme.SecondaryDark
 import com.alejandroglzdev.takeyourcreatine.ui.theme.TakeYourCreatineTheme
+import com.alejandroglzdev.takeyourcreatine.ui.theme.labelSmallSecondaryDark
+import com.alejandroglzdev.takeyourcreatine.ui.theme.labelSmallAccent
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -86,11 +82,15 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Calendars(registers: List<LocalDate>) {
+    //Take one register per month until today (so you can know how many months you must print)
     val registersOnePerMonth = registers.distinctBy { it.month }.filter { it <= LocalDate.now() }
     Column {
         registersOnePerMonth.forEach { registersOnePerMonth ->
-            val registersMonthly = registers.filter { it.month == registersOnePerMonth.month  && it.year == registersOnePerMonth.year}
-            Calendar(date = registersMonthly.first(), registers = registersMonthly )
+            //Once we have a list filtered with one register per month we iterate it
+            //So now, we filter the list again, just to know the days that belong to the month that we are working with
+            val registersMonthly =
+                registers.filter { it.month == registersOnePerMonth.month && it.year == registersOnePerMonth.year }
+            Calendar(registers = registersMonthly)
         }
     }
 
@@ -99,27 +99,24 @@ fun Calendars(registers: List<LocalDate>) {
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun Calendar(date: LocalDate, registers: List<LocalDate>) {
-
+fun Calendar(registers: List<LocalDate>) {
+    val firstDay = registers.first()
     val monthYearFormatter = DateTimeFormatter.ofPattern("MMMM YYYY")
-    val monthYearStr = date.format(monthYearFormatter)
+    val monthYearStr = firstDay.format(monthYearFormatter)
 
     Column(
-        modifier = Modifier.padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally // Centra el contenido horizontalmente
+        modifier = Modifier.padding(16.dp).background(Secondary),
+        horizontalAlignment = CenterHorizontally,
 
     ) {
         Text(
             text = monthYearStr.replaceFirstChar(Char::titlecase),
-            style = TextStyle(
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            ),
+            style = MaterialTheme.typography.labelSmall,
             color = Color.Black,
-            modifier = Modifier.align(CenterHorizontally)
+            modifier = Modifier.align(CenterHorizontally).padding(8.dp)
         )
 
-        val daysInMonth = date.lengthOfMonth()
+        val daysInMonth = firstDay.lengthOfMonth()
         val daysOfWeek = listOf("S", "M", "T", "W", "T", "F", "S")
 
         // Render days of the week headers
@@ -127,10 +124,7 @@ fun Calendar(date: LocalDate, registers: List<LocalDate>) {
             for (day in daysOfWeek) {
                 Text(
                     text = day,
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
-                    ),
+                    style = labelSmallAccent,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .weight(1f)
@@ -139,7 +133,7 @@ fun Calendar(date: LocalDate, registers: List<LocalDate>) {
             }
         }
 
-        val firstDayOfMonth = date.withDayOfMonth(1)
+        val firstDayOfMonth = firstDay.withDayOfMonth(1)
         val firstDayOfWeek = firstDayOfMonth.dayOfWeek.value % 7
         var currentDay = 1
 
@@ -147,10 +141,16 @@ fun Calendar(date: LocalDate, registers: List<LocalDate>) {
         repeat(6) { // Assuming a maximum of 6 rows for simplicity
             Row {
                 for (i in 0 until 7) {
-                    var border = BorderStroke(1.dp, Color.White)
+                    var border = BorderStroke(1.dp, Secondary)
+                    var background = Secondary
+                    var style = labelSmallSecondaryDark
 
-                    registers.forEach {register ->
-                        if (register.dayOfMonth == currentDay) border = BorderStroke(1.dp, Color.Black)
+                    registers.forEach { register ->
+                        if (register.dayOfMonth == currentDay){
+                            border = BorderStroke(1.dp, SecondaryDark)
+                            background = SecondaryDark
+                            style = labelSmallAccent
+                        }
                     }
 
                     if (currentDay <= daysInMonth && (i >= firstDayOfWeek || currentDay > 1)) {
@@ -160,12 +160,13 @@ fun Calendar(date: LocalDate, registers: List<LocalDate>) {
                         ) {
                             Text(
                                 text = currentDay.toString(),
-                                style = TextStyle(fontSize = 16.sp),
+                                style = style,
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier
                                     .padding(4.dp)
-                                    .border(border, CircleShape)
+                                    .clip(CircleShape)
                                     .size(25.dp)
+                                    .background(background)
                             )
                             currentDay++
                         }

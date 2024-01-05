@@ -12,6 +12,6 @@ val Pink40 = Color(0xFF7D5260)
 
 val Primary = Color(android.graphics.Color.parseColor("#E0E8E8"))
 val PrimaryDark = Color(android.graphics.Color.parseColor("#929090"))
-val Secondary = Color(android.graphics.Color.parseColor("#929090"))
-val SecondaryDark = Color(android.graphics.Color.parseColor("#1C1C1C80"))
+val Secondary = Color(android.graphics.Color.parseColor("#D9D9D9"))
+val SecondaryDark = Color(android.graphics.Color.parseColor("#B31C1C1C"))
 val Accent = Color(android.graphics.Color.parseColor("#1C1C1C"))
