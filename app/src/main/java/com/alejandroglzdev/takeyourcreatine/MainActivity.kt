@@ -61,15 +61,40 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     val fechasMes1: List<LocalDate> = listOf(
+        LocalDate.of(2023, 10, 1),
+        LocalDate.of(2023, 11, 1),
+        LocalDate.of(2023, 11, 2),
         LocalDate.of(2024, 1, 1),
-        LocalDate.of(2024, 1, 7),
-        LocalDate.of(2024, 1, 12),
-        LocalDate.of(2024, 1, 18),
-        LocalDate.of(2024, 1, 23),
-        LocalDate.of(2024, 1, 31)
+        LocalDate.of(2024, 1, 15),
+        LocalDate.of(2024, 2, 5),
+        LocalDate.of(2024, 3, 10),
+        LocalDate.of(2024, 4, 20),
+        LocalDate.of(2024, 5, 30),
+        LocalDate.of(2024, 6, 25),
+        LocalDate.of(2024, 7, 12),
+        LocalDate.of(2024, 8, 8),
+        LocalDate.of(2024, 9, 17),
+        LocalDate.of(2024, 10, 5),
+        LocalDate.of(2024, 11, 20),
+        LocalDate.of(2024, 12, 29),
+        LocalDate.of(2025, 1, 5)
     )
 
-    Calendar(date = LocalDate.now(), fechasMes1)
+    Calendars(fechasMes1)
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun Calendars(registers: List<LocalDate>) {
+    val registersOnePerMonth = registers.distinctBy { it.month }.filter { it <= LocalDate.now() }
+    Column {
+        registersOnePerMonth.forEach { registersOnePerMonth ->
+            val registersMonthly = registers.filter { it.month == registersOnePerMonth.month  && it.year == registersOnePerMonth.year}
+            Calendar(date = registersMonthly.first(), registers = registersMonthly )
+        }
+    }
+
+
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
