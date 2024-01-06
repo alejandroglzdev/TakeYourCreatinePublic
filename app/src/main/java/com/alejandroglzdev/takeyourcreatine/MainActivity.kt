@@ -7,7 +7,6 @@ import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -82,15 +81,17 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Calendars(registers: List<LocalDate>) {
-    //Take one register per month until today (so you can know how many months you must print)
-    val registersOnePerMonth = registers.distinctBy { it.month }.filter { it <= LocalDate.now() }
+    // Take one register per month until today (so you can know how many months you must print)
+    // val registersOnePerMonth = registers.distinctBy { it.month }.filter { it <= LocalDate.now() }
+
+    val registersOnePerMonth = countMonths(registers.first())
     Column {
         registersOnePerMonth.forEach { registersOnePerMonth ->
             //Once we have a list filtered with one register per month we iterate it
             //So now, we filter the list again, just to know the days that belong to the month that we are working with
             val registersMonthly =
                 registers.filter { it.month == registersOnePerMonth.month && it.year == registersOnePerMonth.year }
-            Calendar(registers = registersMonthly)
+            Calendar(registers = registersMonthly, registersOnePerMonth)
         }
     }
 
@@ -99,21 +100,29 @@ fun Calendars(registers: List<LocalDate>) {
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun Calendar(registers: List<LocalDate>) {
-    val firstDay = registers.first()
+fun Calendar(registers: List<LocalDate>, month: LocalDate) {
+    // Parameter month has a meaning. In the case that a month doesn't have a register, we must print
+    // the calendar also. We had (firstDay = registers.first()), so it was crashing because the list
+    // was null.
+
+    val firstDay = month
     val monthYearFormatter = DateTimeFormatter.ofPattern("MMMM YYYY")
     val monthYearStr = firstDay.format(monthYearFormatter)
 
     Column(
-        modifier = Modifier.padding(16.dp).background(Secondary),
+        modifier = Modifier
+            .padding(16.dp)
+            .background(Secondary),
         horizontalAlignment = CenterHorizontally,
 
-    ) {
+        ) {
         Text(
             text = monthYearStr.replaceFirstChar(Char::titlecase),
             style = MaterialTheme.typography.labelSmall,
             color = Color.Black,
-            modifier = Modifier.align(CenterHorizontally).padding(8.dp)
+            modifier = Modifier
+                .align(CenterHorizontally)
+                .padding(8.dp)
         )
 
         val daysInMonth = firstDay.lengthOfMonth()
@@ -146,7 +155,7 @@ fun Calendar(registers: List<LocalDate>) {
                     var style = labelSmallSecondaryDark
 
                     registers.forEach { register ->
-                        if (register.dayOfMonth == currentDay){
+                        if (register.dayOfMonth == currentDay) {
                             border = BorderStroke(1.dp, SecondaryDark)
                             background = SecondaryDark
                             style = labelSmallAccent
@@ -183,6 +192,28 @@ fun Calendar(registers: List<LocalDate>) {
             }
         }
     }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+private fun countMonths(register: LocalDate): List<LocalDate> {
+    val datePerMonth = mutableListOf<LocalDate>()
+    var todayDate = register
+
+    // It looks if the date is before today, because if it's we must add a month
+
+    // If the date is Today, because if it's we must add a month also
+
+    // If the date is in the same month and year, because if it's we must add a month
+    // (Example: The first date is 20/11/23 and today is 06/01/24)
+    // so it will start adding months. There will be a case, where the date that we were adding up one month
+    // will be 20/01/24. So it won't print January's calendar. With this last condition, it'll check that.
+
+    while (todayDate.isBefore(LocalDate.now()) || todayDate.isEqual(LocalDate.now()) || (todayDate.month == LocalDate.now().month && todayDate.year == LocalDate.now().year)) {
+        datePerMonth.add(todayDate)
+        todayDate = todayDate.plusMonths(1)
+    }
+
+    return datePerMonth
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
