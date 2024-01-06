@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alejandroglzdev.takeyourcreatine.ui.component.items.Calendar
+import com.alejandroglzdev.takeyourcreatine.ui.component.views.Calendars
 import com.alejandroglzdev.takeyourcreatine.ui.theme.Secondary
 import com.alejandroglzdev.takeyourcreatine.ui.theme.SecondaryDark
 import com.alejandroglzdev.takeyourcreatine.ui.theme.TakeYourCreatineTheme
@@ -80,29 +81,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-@Composable
-fun Calendars(registers: List<LocalDate>) {
-    // Take one register per month until today (so you can know how many months you must print)
-    // val registersOnePerMonth = registers.distinctBy { it.month }.filter { it <= LocalDate.now() }
-
-    val registersOnePerMonth = countMonths(registers.first())
-    Column {
-        registersOnePerMonth.forEach { registersOnePerMonth ->
-            //Once we have a list filtered with one register per month we iterate it
-            //So now, we filter the list again, just to know the days that belong to the month that we are working with
-            val registersMonthly =
-                registers.filter { it.month == registersOnePerMonth.month && it.year == registersOnePerMonth.year }
-            Calendar(registers = registersMonthly, registersOnePerMonth)
-        }
-    }
-
-
-}
-
-
-
-@RequiresApi(Build.VERSION_CODES.O)
-private fun countMonths(register: LocalDate): List<LocalDate> {
+fun countMonths(register: LocalDate): List<LocalDate> {
     val datePerMonth = mutableListOf<LocalDate>()
     var todayDate = register
 

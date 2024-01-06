@@ -37,7 +37,7 @@ fun Calendar(registers: List<LocalDate>, month: LocalDate) {
 
     Column(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(32.dp)
             .background(Secondary),
         horizontalAlignment = Alignment.CenterHorizontally,
 
