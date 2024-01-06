@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.alejandroglzdev.takeyourcreatine.ui.component.items.Calendar
 import com.alejandroglzdev.takeyourcreatine.ui.theme.Secondary
 import com.alejandroglzdev.takeyourcreatine.ui.theme.SecondaryDark
 import com.alejandroglzdev.takeyourcreatine.ui.theme.TakeYourCreatineTheme
@@ -98,101 +99,7 @@ fun Calendars(registers: List<LocalDate>) {
 
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-fun Calendar(registers: List<LocalDate>, month: LocalDate) {
-    // Parameter month has a meaning. In the case that a month doesn't have a register, we must print
-    // the calendar also. We had (firstDay = registers.first()), so it was crashing because the list
-    // was null.
 
-    val firstDay = month
-    val monthYearFormatter = DateTimeFormatter.ofPattern("MMMM YYYY")
-    val monthYearStr = firstDay.format(monthYearFormatter)
-
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .background(Secondary),
-        horizontalAlignment = CenterHorizontally,
-
-        ) {
-        Text(
-            text = monthYearStr.replaceFirstChar(Char::titlecase),
-            style = MaterialTheme.typography.labelSmall,
-            color = Color.Black,
-            modifier = Modifier
-                .align(CenterHorizontally)
-                .padding(8.dp)
-        )
-
-        val daysInMonth = firstDay.lengthOfMonth()
-        val daysOfWeek = listOf("S", "M", "T", "W", "T", "F", "S")
-
-        // Render days of the week headers
-        Row {
-            for (day in daysOfWeek) {
-                Text(
-                    text = day,
-                    style = labelSmallAccent,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(4.dp)
-                )
-            }
-        }
-
-        val firstDayOfMonth = firstDay.withDayOfMonth(1)
-        val firstDayOfWeek = firstDayOfMonth.dayOfWeek.value % 7
-        var currentDay = 1
-
-        // Render calendar days
-        repeat(6) { // Assuming a maximum of 6 rows for simplicity
-            Row {
-                for (i in 0 until 7) {
-                    var border = BorderStroke(1.dp, Secondary)
-                    var background = Secondary
-                    var style = labelSmallSecondaryDark
-
-                    registers.forEach { register ->
-                        if (register.dayOfMonth == currentDay) {
-                            border = BorderStroke(1.dp, SecondaryDark)
-                            background = SecondaryDark
-                            style = labelSmallAccent
-                        }
-                    }
-
-                    if (currentDay <= daysInMonth && (i >= firstDayOfWeek || currentDay > 1)) {
-                        Box(
-                            Modifier.weight(1f),
-                            contentAlignment = Center
-                        ) {
-                            Text(
-                                text = currentDay.toString(),
-                                style = style,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier
-                                    .padding(4.dp)
-                                    .clip(CircleShape)
-                                    .size(25.dp)
-                                    .background(background)
-                            )
-                            currentDay++
-                        }
-
-                    } else {
-                        Text(
-                            text = "",
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(4.dp)
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
 
 @RequiresApi(Build.VERSION_CODES.O)
 private fun countMonths(register: LocalDate): List<LocalDate> {
