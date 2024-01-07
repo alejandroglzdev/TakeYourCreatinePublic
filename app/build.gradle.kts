@@ -62,6 +62,7 @@ dependencies {
 
     //AdMob
     implementation ("com.google.android.gms:play-services-ads:22.5.0")
+    implementation("androidx.compose.ui:ui-unit-android:1.5.4")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
