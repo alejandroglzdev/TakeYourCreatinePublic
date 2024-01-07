@@ -26,6 +26,11 @@ val Typography = Typography(
     labelSmall = TextStyle(
         fontFamily = SourceCodePro,
         fontSize = 15.sp,
+    ),
+
+    headlineSmall = TextStyle(
+        fontFamily = SourceCodePro,
+        fontSize = 26.sp,
     )
 
 )
@@ -36,4 +41,8 @@ val labelSmallAccent = Typography.labelSmall.copy(
 
 val labelSmallSecondaryDark = Typography.labelSmall.copy(
     color = SecondaryDark
+)
+
+val headlineSmallAccent = Typography.headlineSmall.copy(
+    color = Accent
 )

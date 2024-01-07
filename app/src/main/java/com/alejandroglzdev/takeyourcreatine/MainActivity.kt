@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alejandroglzdev.takeyourcreatine.ui.component.items.Calendar
 import com.alejandroglzdev.takeyourcreatine.ui.component.views.Calendars
+import com.alejandroglzdev.takeyourcreatine.ui.component.views.MainView
 import com.alejandroglzdev.takeyourcreatine.ui.theme.Secondary
 import com.alejandroglzdev.takeyourcreatine.ui.theme.SecondaryDark
 import com.alejandroglzdev.takeyourcreatine.ui.theme.TakeYourCreatineTheme
@@ -47,7 +48,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                   //Greeting("Android")
+                    MainView()
                 }
             }
         }
