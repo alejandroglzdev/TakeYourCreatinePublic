@@ -103,12 +103,3 @@ fun countMonths(register: LocalDate): List<LocalDate> {
 
     return datePerMonth
 }
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    TakeYourCreatineTheme {
-        Greeting("Android")
-    }
-}
