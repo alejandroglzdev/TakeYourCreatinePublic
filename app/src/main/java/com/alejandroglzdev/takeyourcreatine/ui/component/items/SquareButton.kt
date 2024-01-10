@@ -1,5 +1,6 @@
 package com.alejandroglzdev.takeyourcreatine.ui.component.items
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -11,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -20,7 +22,11 @@ import com.alejandroglzdev.takeyourcreatine.ui.theme.SecondaryDark
 @Composable
 fun SquareButton(
     onClick: () -> Unit,
-    content: String
+    content: String,
+    modifier: Modifier = Modifier
+        .fillMaxWidth()
+        .padding(start = 24.dp, end = 24.dp),
+    textAlign: TextAlign = TextAlign.Center
 ) {
     val squareShape = object : Shape {
         override fun createOutline(
@@ -32,9 +38,9 @@ fun SquareButton(
         )
     }
 
+
     Button(
         onClick = { onClick },
-        content = { Text(text = content, style = MaterialTheme.typography.labelSmall) },
         shape = squareShape,
         colors = ButtonDefaults.buttonColors(
             containerColor = SecondaryDark,
@@ -42,7 +48,14 @@ fun SquareButton(
             disabledContainerColor = SecondaryDark,
             disabledContentColor = Accent
         ),
-        modifier = Modifier.fillMaxWidth().padding(start = 24.dp, end = 24.dp)
-
-        )
+        modifier = modifier,
+        contentPadding = PaddingValues(0.dp)
+    ) {
+            Text(
+                text = content,
+                style = MaterialTheme.typography.labelSmall,
+                textAlign = textAlign,
+                modifier = Modifier.fillMaxWidth().padding(start = 12.dp)
+            )
+    }
 }

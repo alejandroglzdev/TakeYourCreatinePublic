@@ -23,7 +23,10 @@ import com.alejandroglzdev.takeyourcreatine.ui.theme.headlineSmallAccent
 
 @Composable
 fun HomeView() {
-    ConstraintLayout(Modifier.fillMaxSize().background(Primary),
+    ConstraintLayout(
+        Modifier
+            .fillMaxSize()
+            .background(Primary),
 
     ) {
         val (box, adBox) = createRefs()
@@ -51,7 +54,7 @@ fun HomeView() {
 
             SquareButton(
                 onClick = { /*TODO*/ },
-                content = "Take your creatine!"
+                content = stringResource(R.string.take_your_creatine)
             )
         }
 

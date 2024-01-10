@@ -17,6 +17,7 @@ fun MainView() {
         ) { paddingValues ->
            Box(modifier = Modifier.padding(paddingValues)) {
                HomeView()
+               //SettingsView()
            }
 
         }
