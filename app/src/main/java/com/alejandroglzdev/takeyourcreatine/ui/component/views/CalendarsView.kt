@@ -17,7 +17,7 @@ import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun Calendars(registers: List<LocalDate>) {
+fun CalendarsView(registers: List<LocalDate>) {
     // Take one register per month until today (so you can know how many months you must print)
     // val registersOnePerMonth = registers.distinctBy { it.month }.filter { it <= LocalDate.now() }
 
@@ -34,8 +34,8 @@ fun Calendars(registers: List<LocalDate>) {
                 registers.filter { it.month == registersOnePerMonth.month && it.year == registersOnePerMonth.year }
             Calendar(registers = registersMonthly, registersOnePerMonth)
         }
-        
-        AdmobBanner(padding = 12.dp,banner = "ca-app-pub-3940256099942544/6300978111")
+
+        AdmobBanner(padding = 12.dp, banner = "ca-app-pub-3940256099942544/6300978111")
     }
 
 

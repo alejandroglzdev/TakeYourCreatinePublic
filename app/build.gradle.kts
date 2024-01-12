@@ -50,6 +50,7 @@ android {
 }
 
 dependencies {
+    val nav_version = "2.5.3"
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
@@ -66,6 +67,9 @@ dependencies {
 
     //Constraint layout
     implementation ("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+
+    //Navigation
+    implementation("androidx.navigation:navigation-compose:$nav_version")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

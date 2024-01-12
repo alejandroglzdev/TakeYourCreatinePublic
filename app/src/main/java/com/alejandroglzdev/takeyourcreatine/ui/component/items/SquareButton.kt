@@ -51,11 +51,13 @@ fun SquareButton(
         modifier = modifier,
         contentPadding = PaddingValues(0.dp)
     ) {
-            Text(
-                text = content,
-                style = MaterialTheme.typography.labelSmall,
-                textAlign = textAlign,
-                modifier = Modifier.fillMaxWidth().padding(start = 12.dp)
-            )
+        Text(
+            text = content,
+            style = MaterialTheme.typography.labelSmall,
+            textAlign = textAlign,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 12.dp)
+        )
     }
 }

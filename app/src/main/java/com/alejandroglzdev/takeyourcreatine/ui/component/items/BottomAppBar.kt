@@ -12,13 +12,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.alejandroglzdev.takeyourcreatine.domain.BottomNavItem
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import com.alejandroglzdev.takeyourcreatine.navigation.BottomNavItem
 import com.alejandroglzdev.takeyourcreatine.ui.theme.Accent
 import com.alejandroglzdev.takeyourcreatine.ui.theme.PrimaryDark
 import com.alejandroglzdev.takeyourcreatine.ui.theme.Secondary
 
 @Composable
-fun BottomAppBar() {
+fun BottomAppBar(currentDestination: NavDestination?, navController: NavHostController) {
     val items = listOf(
         BottomNavItem.Home,
         BottomNavItem.Calendar,
@@ -27,14 +31,20 @@ fun BottomAppBar() {
 
     NavigationBar(containerColor = PrimaryDark) {
         items.forEach { items ->
-            AddItem(screen = items)
+            AddItem(
+                screen = items,
+                currentDestination = currentDestination,
+                navController = navController
+            )
         }
     }
 }
 
 @Composable
 fun RowScope.AddItem(
-    screen: BottomNavItem
+    screen: BottomNavItem,
+    currentDestination: NavDestination?,
+    navController: NavHostController
 ) {
     NavigationBarItem(
         label = {
@@ -50,9 +60,17 @@ fun RowScope.AddItem(
                 modifier = Modifier.size(24.dp)
             )
         },
-        selected = false,
+        selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
         alwaysShowLabel = true,
-        onClick = { /*TODO*/ },
+        onClick = {
+            navController.navigate(screen.route) {
+                popUpTo(navController.graph.findStartDestination().id) {
+                    saveState = true
+                }
+                launchSingleTop = true
+                restoreState = true
+            }
+        },
         colors = NavigationBarItemDefaults.colors(
             selectedIconColor = Accent,
             selectedTextColor = Accent,
