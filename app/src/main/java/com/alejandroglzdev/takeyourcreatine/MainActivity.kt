@@ -12,8 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.alejandroglzdev.takeyourcreatine.navigation.AppNavigation
 import com.alejandroglzdev.takeyourcreatine.ui.theme.TakeYourCreatineTheme
+import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
