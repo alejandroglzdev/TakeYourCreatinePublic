@@ -8,10 +8,8 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.alejandroglzdev.takeyourcreatine.ui.component.views.CalendarsView
-import com.alejandroglzdev.takeyourcreatine.ui.component.views.MainView
+import com.alejandroglzdev.takeyourcreatine.navigation.AppNavigation
 import com.alejandroglzdev.takeyourcreatine.ui.theme.TakeYourCreatineTheme
 import java.time.LocalDate
 
@@ -26,7 +24,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainView()
+                    AppNavigation()
                 }
             }
         }

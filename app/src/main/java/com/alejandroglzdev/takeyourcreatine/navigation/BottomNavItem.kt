@@ -8,11 +8,11 @@ sealed class BottomNavItem(
     var route: String
 ) {
     object Home :
-            BottomNavItem(
-                title = "Home",
-                icon = R.drawable.ic_home,
-                route = Screens.HomeView.name
-            )
+        BottomNavItem(
+            title = "Home",
+            icon = R.drawable.ic_home,
+            route = Screens.HomeView.name
+        )
 
     object Calendar :
         BottomNavItem(
@@ -26,5 +26,19 @@ sealed class BottomNavItem(
             title = "Settings",
             icon = R.drawable.ic_settings,
             route = Screens.SettingsView.name
+        )
+
+    object Bodyweight :
+        BottomNavItem(
+            title = "bodyweight_view",
+            icon = R.drawable.ic_settings,
+            route = Screens.BodyweightView.name
+        )
+
+    object MainView :
+        BottomNavItem(
+            title = "main_view",
+            icon = R.drawable.ic_settings,
+            route = Screens.MainView.name
         )
 }

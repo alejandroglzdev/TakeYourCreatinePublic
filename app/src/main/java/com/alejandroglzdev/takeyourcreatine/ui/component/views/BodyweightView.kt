@@ -25,7 +25,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavHostController
 import com.alejandroglzdev.takeyourcreatine.R
+import com.alejandroglzdev.takeyourcreatine.navigation.BottomNavItem
 import com.alejandroglzdev.takeyourcreatine.ui.component.items.AdmobBanner
 import com.alejandroglzdev.takeyourcreatine.ui.component.items.SquareButton
 import com.alejandroglzdev.takeyourcreatine.ui.theme.Accent
@@ -36,7 +38,7 @@ import com.alejandroglzdev.takeyourcreatine.ui.theme.headlineMediumAccent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BodyweightView(welcome: Boolean = false) {
+fun BodyweightView(welcome: Boolean = false, navController: NavHostController) {
     var text by rememberSaveable { mutableStateOf("") }
 
     ConstraintLayout(
@@ -72,9 +74,7 @@ fun BodyweightView(welcome: Boolean = false) {
                         style = headlineMediumAccent,
                         modifier = Modifier.fillMaxHeight(0.55f)
                     )
-
                 }
-
 
                 //Controlar input
                 OutlinedTextField(
@@ -95,10 +95,14 @@ fun BodyweightView(welcome: Boolean = false) {
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
-                SquareButton(onClick = { /*TODO*/ }, content = stringResource(R.string.submit))
+
+                SquareButton(onClick = {
+                    navController.popBackStack()
+                    navController.navigate(BottomNavItem.MainView.route)
+
+
+                }, content = stringResource(R.string.submit))
             }
-
-
         }
 
         Box(modifier = Modifier.constrainAs(adBox) {

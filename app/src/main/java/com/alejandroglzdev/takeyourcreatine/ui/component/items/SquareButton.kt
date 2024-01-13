@@ -40,7 +40,7 @@ fun SquareButton(
 
 
     Button(
-        onClick = { onClick },
+        onClick = { onClick() },
         shape = squareShape,
         colors = ButtonDefaults.buttonColors(
             containerColor = SecondaryDark,

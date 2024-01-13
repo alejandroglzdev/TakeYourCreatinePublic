@@ -46,6 +46,14 @@ fun RowScope.AddItem(
     currentDestination: NavDestination?,
     navController: NavHostController
 ) {
+    val route = currentDestination?.hierarchy?.first()?.route
+
+    val routeRetrieved: String? = if (route == "MainView") {
+        "HomeView"
+    } else {
+        currentDestination?.hierarchy?.firstOrNull { it.route == screen.route }?.route
+    }
+
     NavigationBarItem(
         label = {
             Text(
@@ -60,7 +68,7 @@ fun RowScope.AddItem(
                 modifier = Modifier.size(24.dp)
             )
         },
-        selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+        selected = routeRetrieved == screen.route,
         alwaysShowLabel = true,
         onClick = {
             navController.navigate(screen.route) {
