@@ -3,6 +3,8 @@ package com.alejandroglzdev.takeyourcreatine.navigation
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,12 +19,22 @@ import java.time.LocalDate
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavigation(navController: NavHostController, creatineViewModel: CreatineViewModel) {
+    creatineViewModel.getUserData()
+    val userData by creatineViewModel.userData.observeAsState()
+    val onboard = userData == null
+
+    val startDestination = if (onboard) {
+        Screens.BodyweightView.name
+    } else {
+        Screens.MainView.name
+
+    }
     NavHost(
         navController = navController,
-        startDestination = Screens.BodyweightView.name
+        startDestination = startDestination
     ) {
         composable(route = Screens.HomeView.name) {
-            MainView(navController = navController) { HomeView() }
+            MainView(navController = navController) { HomeView(creatineViewModel) }
         }
         composable(route = Screens.CalendarView.name) {
             val fechasMes1: List<LocalDate> = listOf(
@@ -51,11 +63,14 @@ fun AppNavigation(navController: NavHostController, creatineViewModel: CreatineV
             MainView(navController = navController) { SettingsView() }
         }
         composable(route = Screens.BodyweightView.name) {
-            BodyweightView(navController = navController, creatineViewModel = creatineViewModel)
+            BodyweightView(
+                navController = navController,
+                creatineViewModel = creatineViewModel,
+                welcome = onboard
+            )
         }
         composable(route = Screens.MainView.name) {
-            MainView(navController = navController) { HomeView() }
+            MainView(navController = navController) { HomeView(creatineViewModel) }
         }
     }
-
 }

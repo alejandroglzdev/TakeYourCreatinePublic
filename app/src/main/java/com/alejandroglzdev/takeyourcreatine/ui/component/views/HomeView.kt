@@ -8,12 +8,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.alejandroglzdev.takeyourcreatine.CreatineViewModel
 import com.alejandroglzdev.takeyourcreatine.R
 import com.alejandroglzdev.takeyourcreatine.ui.component.items.AdmobBanner
 import com.alejandroglzdev.takeyourcreatine.ui.component.items.SquareButton
@@ -21,7 +24,14 @@ import com.alejandroglzdev.takeyourcreatine.ui.theme.Primary
 import com.alejandroglzdev.takeyourcreatine.ui.theme.headlineSmallAccent
 
 @Composable
-fun HomeView() {
+fun HomeView(creatineViewModel: CreatineViewModel) {
+    creatineViewModel.getUserData()
+    val userData by creatineViewModel.userData.observeAsState()
+    val creatineIntake = userData.let {
+        it?.creatineIntake ?: 1
+    }
+
+
     ConstraintLayout(
         Modifier
             .fillMaxSize()
@@ -41,7 +51,10 @@ fun HomeView() {
                 }
         ) {
             Text(
-                text = stringResource(R.string.your_intake_for_today_is_7_grams),
+                text = stringResource(
+                    R.string.your_intake_for_today_is_grams,
+                    creatineIntake
+                ),
                 style = headlineSmallAccent,
                 textAlign = TextAlign.Center
             )

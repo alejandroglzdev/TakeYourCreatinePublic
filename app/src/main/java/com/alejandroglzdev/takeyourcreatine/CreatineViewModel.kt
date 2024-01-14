@@ -1,7 +1,5 @@
 package com.alejandroglzdev.takeyourcreatine
 
-import android.util.Log
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,11 +17,13 @@ class CreatineViewModel @Inject constructor(
     private val insertUserDataUseCase: InsertUserDataUseCase,
     private val deleteUserDataUseCase: DeleteUserDataUseCase
 ) : ViewModel() {
+
+    val userData = MutableLiveData<UserData>()
     fun getUserData() {
         viewModelScope.launch {
             val result = getUserDataUseCase()
-            result.let { userData ->
-                val userData = userData
+            result.let {
+                userData.postValue(it)
 
             }
         }
@@ -32,7 +32,11 @@ class CreatineViewModel @Inject constructor(
     fun insertUserData(userData: UserData) {
         viewModelScope.launch {
             deleteUserDataUseCase()
+
+        }
+        viewModelScope.launch {
             insertUserDataUseCase(userData)
+
         }
     }
 }

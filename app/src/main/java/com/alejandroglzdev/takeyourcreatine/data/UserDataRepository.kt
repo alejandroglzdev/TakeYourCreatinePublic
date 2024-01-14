@@ -7,9 +7,14 @@ import javax.inject.Inject
 class UserDataRepository @Inject constructor(
     private val userDataDao: UserDataDao
 ) {
-    suspend fun getUserDataFromDatabase(): UserData {
+    suspend fun getUserDataFromDatabase(): UserData? {
         val response = userDataDao.getAllUserData()
-        return response.first()
+        return if (response.isNotEmpty()){
+            response.last()
+        }else{
+            null
+        }
+
     }
 
     suspend fun deleteUserData() {
@@ -18,9 +23,5 @@ class UserDataRepository @Inject constructor(
 
     suspend fun insertUserData(userData: UserData) {
         userDataDao.insertUserData(userData)
-    }
-
-    suspend fun updateUserData(userData: UserData) {
-        userDataDao.updateUserData(userData)
     }
 }

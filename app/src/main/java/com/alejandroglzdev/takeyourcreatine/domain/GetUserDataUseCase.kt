@@ -7,8 +7,7 @@ import javax.inject.Inject
 class GetUserDataUseCase @Inject constructor(
     private val userDataRepository: UserDataRepository
 ) {
-    suspend operator fun invoke(): UserData {
-        val userData = userDataRepository.getUserDataFromDatabase()
-        return userData
+    suspend operator fun invoke(): UserData? {
+        return userDataRepository.getUserDataFromDatabase()
     }
 }
