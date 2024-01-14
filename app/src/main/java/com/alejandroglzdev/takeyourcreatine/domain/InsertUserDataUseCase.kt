@@ -8,6 +8,12 @@ class InsertUserDataUseCase @Inject constructor(
     private val userDataRepository: UserDataRepository
 ) {
     suspend operator fun invoke(userData: UserData) {
-        userDataRepository.insertUserData(userData)
+        val intake = userData.let {userData ->
+            userData.creatineIntake ?: 0
+        }
+        val finalIntake = (intake * 0.1).toInt()
+        val newUserData = UserData(creatineIntake = finalIntake)
+
+        userDataRepository.insertUserData(newUserData)
     }
 }

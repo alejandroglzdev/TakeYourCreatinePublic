@@ -6,8 +6,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "user_data")
 data class UserData(
-    @PrimaryKey(autoGenerate = true) val id: Integer?,
-    @ColumnInfo(name = "onboard") val onboard: Boolean?,
-    @ColumnInfo(name = "notifications") val notifications: Boolean?,
+    @PrimaryKey(autoGenerate = true) val id: Int? = null,
+    @ColumnInfo(name = "onboard") val onboard: Boolean? = false,
+    @ColumnInfo(name = "notifications") val notifications: Boolean? = null,
     @ColumnInfo(name = "creatine_intake") val creatineIntake: Int?
 )

@@ -18,6 +18,8 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -26,7 +28,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
+import com.alejandroglzdev.takeyourcreatine.CreatineViewModel
 import com.alejandroglzdev.takeyourcreatine.R
+import com.alejandroglzdev.takeyourcreatine.data.database.entities.UserData
 import com.alejandroglzdev.takeyourcreatine.navigation.BottomNavItem
 import com.alejandroglzdev.takeyourcreatine.ui.component.items.AdmobBanner
 import com.alejandroglzdev.takeyourcreatine.ui.component.items.SquareButton
@@ -35,11 +39,17 @@ import com.alejandroglzdev.takeyourcreatine.ui.theme.Primary
 import com.alejandroglzdev.takeyourcreatine.ui.theme.PrimaryDark
 import com.alejandroglzdev.takeyourcreatine.ui.theme.Secondary
 import com.alejandroglzdev.takeyourcreatine.ui.theme.headlineMediumAccent
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BodyweightView(welcome: Boolean = false, navController: NavHostController) {
+fun BodyweightView(
+    welcome: Boolean = false,
+    navController: NavHostController,
+    creatineViewModel: CreatineViewModel
+) {
     var text by rememberSaveable { mutableStateOf("") }
+    val composableScope = rememberCoroutineScope()
 
     ConstraintLayout(
         Modifier
@@ -97,6 +107,12 @@ fun BodyweightView(welcome: Boolean = false, navController: NavHostController) {
                 Spacer(modifier = Modifier.height(24.dp))
 
                 SquareButton(onClick = {
+                    val userData = UserData(
+                        onboard = false,
+                        creatineIntake = text.toInt()
+                    )
+                    composableScope.launch { creatineViewModel.insertUserData(userData) }
+
                     navController.popBackStack()
                     navController.navigate(BottomNavItem.MainView.route)
 

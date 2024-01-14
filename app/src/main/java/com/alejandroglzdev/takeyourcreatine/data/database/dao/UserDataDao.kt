@@ -10,10 +10,13 @@ import com.alejandroglzdev.takeyourcreatine.data.database.entities.UserData
 @Dao
 interface UserDataDao {
     @Query("SELECT * FROM user_data")
-    fun getAllUserData(): List<UserData>
+    suspend fun getAllUserData(): List<UserData>
+
+    @Query("DELETE FROM user_data")
+    suspend fun deleteAllUserData()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertUserData(vararg userData: UserData)
+    suspend fun insertUserData(vararg userData: UserData)
     @Update
-    fun updateUserData(vararg userData: UserData)
+    suspend fun updateUserData(vararg userData: UserData)
 }

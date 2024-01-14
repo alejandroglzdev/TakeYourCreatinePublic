@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.alejandroglzdev.takeyourcreatine.CreatineViewModel
 import com.alejandroglzdev.takeyourcreatine.ui.component.views.BodyweightView
 import com.alejandroglzdev.takeyourcreatine.ui.component.views.CalendarsView
 import com.alejandroglzdev.takeyourcreatine.ui.component.views.HomeView
@@ -15,7 +16,7 @@ import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun AppNavigation(navController: NavHostController) {
+fun AppNavigation(navController: NavHostController, creatineViewModel: CreatineViewModel) {
     NavHost(
         navController = navController,
         startDestination = Screens.BodyweightView.name
@@ -50,7 +51,7 @@ fun AppNavigation(navController: NavHostController) {
             MainView(navController = navController) { SettingsView() }
         }
         composable(route = Screens.BodyweightView.name) {
-            BodyweightView(navController = navController)
+            BodyweightView(navController = navController, creatineViewModel = creatineViewModel)
         }
         composable(route = Screens.MainView.name) {
             MainView(navController = navController) { HomeView() }

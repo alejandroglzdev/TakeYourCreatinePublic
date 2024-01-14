@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -17,17 +18,19 @@ import java.time.LocalDate
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    private val creatineViewModel: CreatineViewModel by viewModels()
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             TakeYourCreatineTheme {
                 val navController = rememberNavController()
+                //InsertUserDataUseCase(UserData(onboard = true, notifications = true, creatineIntake = 7))
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    AppNavigation(navController)
+                    AppNavigation(navController, creatineViewModel)
                 }
             }
         }

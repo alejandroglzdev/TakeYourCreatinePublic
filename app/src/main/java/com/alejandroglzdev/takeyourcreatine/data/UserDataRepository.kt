@@ -12,6 +12,10 @@ class UserDataRepository @Inject constructor(
         return response.first()
     }
 
+    suspend fun deleteUserData() {
+        userDataDao.deleteAllUserData()
+    }
+
     suspend fun insertUserData(userData: UserData) {
         userDataDao.insertUserData(userData)
     }

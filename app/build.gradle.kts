@@ -33,7 +33,7 @@ android {
         }
     }
     compileOptions {
-        //lO HABIA CAMVBIADO A 17
+        //Antes era 1_8
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -56,7 +56,6 @@ android {
 dependencies {
     val nav_version = "2.5.3"
     val room_version = "2.4.0"
-    //val hilt_version = "2.35"
     val hilt_version = "2.44"
 
     implementation("androidx.core:core-ktx:1.9.0")
@@ -80,14 +79,23 @@ dependencies {
 
     //Room
     implementation("androidx.room:room-runtime:$room_version")
+    implementation ("androidx.room:room-ktx:$room_version")
     annotationProcessor("androidx.room:room-compiler:$room_version")
-
     // To use Kotlin annotation processing tool (kapt)
     kapt("androidx.room:room-compiler:$room_version")
 
-    //dagger hilt
+    //Dagger hilt
     implementation ("com.google.dagger:hilt-android:$hilt_version")
     kapt ("com.google.dagger:hilt-android-compiler:$hilt_version")
+
+    //Corrutinas
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.6")
+
+    // ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
+    // LiveData
+    //implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
+    //implementation("androidx.compose.runtime:runtime-livedata:1.8.2")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
