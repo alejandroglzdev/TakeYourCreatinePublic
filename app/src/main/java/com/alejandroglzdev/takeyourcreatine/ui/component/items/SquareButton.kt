@@ -26,7 +26,8 @@ fun SquareButton(
     modifier: Modifier = Modifier
         .fillMaxWidth()
         .padding(start = 24.dp, end = 24.dp),
-    textAlign: TextAlign = TextAlign.Center
+    textAlign: TextAlign = TextAlign.Center,
+    enabled: Boolean = true
 ) {
     val squareShape = object : Shape {
         override fun createOutline(
@@ -49,7 +50,8 @@ fun SquareButton(
             disabledContentColor = Accent
         ),
         modifier = modifier,
-        contentPadding = PaddingValues(0.dp)
+        contentPadding = PaddingValues(0.dp),
+        enabled = enabled
     ) {
         Text(
             text = content,

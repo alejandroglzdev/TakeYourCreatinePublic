@@ -34,7 +34,9 @@ fun AppNavigation(navController: NavHostController, creatineViewModel: CreatineV
         startDestination = startDestination
     ) {
         composable(route = Screens.HomeView.name) {
-            MainView(navController = navController) { HomeView(creatineViewModel) }
+            creatineViewModel.getUserData()
+            creatineViewModel.getUserRegisters()
+            MainView(navController = navController) { HomeView(creatineViewModel, navController) }
         }
         composable(route = Screens.CalendarView.name) {
             val fechasMes1: List<LocalDate> = listOf(
@@ -70,7 +72,9 @@ fun AppNavigation(navController: NavHostController, creatineViewModel: CreatineV
             )
         }
         composable(route = Screens.MainView.name) {
-            MainView(navController = navController) { HomeView(creatineViewModel) }
+            creatineViewModel.getUserData()
+            creatineViewModel.getUserRegisters()
+            MainView(navController = navController) { HomeView(creatineViewModel, navController) }
         }
     }
 }
