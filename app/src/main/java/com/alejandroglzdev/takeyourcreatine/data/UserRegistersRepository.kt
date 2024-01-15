@@ -7,11 +7,11 @@ import javax.inject.Inject
 class UserRegistersRepository @Inject constructor(
     private val userRegistersDao: UserRegistersDao
 ) {
-    suspend fun getUserDataFromDatabase(): List<UserRegisters> {
+    suspend fun getUserRegistersFromDatabase(): List<UserRegisters> {
         val response = userRegistersDao.getUserRegisters()
-        return if (response.isNotEmpty()){
+        return if (response.isNotEmpty()) {
             return response
-        }else{
+        } else {
             return emptyList()
         }
 
@@ -21,4 +21,10 @@ class UserRegistersRepository @Inject constructor(
         userRegistersDao.insertUserRegisters(userRegisters)
 
     }
+
+    suspend fun deleteUserRegisters() {
+        userRegistersDao.deleteUserRegisters()
+
+    }
+
 }

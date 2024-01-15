@@ -17,4 +17,7 @@ interface UserRegistersDao {
 
     @Update
     suspend fun updateUserRegisters(vararg userRegisters: UserRegisters)
+
+    @Query("DELETE FROM user_registers")
+    suspend fun deleteUserRegisters()
 }
