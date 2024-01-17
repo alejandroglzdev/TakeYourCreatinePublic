@@ -14,20 +14,21 @@ import com.alejandroglzdev.takeyourcreatine.ui.component.views.CalendarsView
 import com.alejandroglzdev.takeyourcreatine.ui.component.views.HomeView
 import com.alejandroglzdev.takeyourcreatine.ui.component.views.MainView
 import com.alejandroglzdev.takeyourcreatine.ui.component.views.SettingsView
-import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavigation(navController: NavHostController, creatineViewModel: CreatineViewModel) {
     creatineViewModel.getUserData()
+    creatineViewModel.getUserRegisters()
     val userData by creatineViewModel.userData.observeAsState()
+    val userRegisters by creatineViewModel.userRegisters.observeAsState()
+    val daysRow = userRegisters?.let { creatineViewModel.consecutiveDays(it) } ?: 1
     val onboard = userData == null
 
     val startDestination = if (onboard) {
         Screens.BodyweightView.name
     } else {
         Screens.MainView.name
-
     }
     NavHost(
         navController = navController,
@@ -36,30 +37,41 @@ fun AppNavigation(navController: NavHostController, creatineViewModel: CreatineV
         composable(route = Screens.HomeView.name) {
             creatineViewModel.getUserData()
             creatineViewModel.getUserRegisters()
-            MainView(navController = navController) { HomeView(creatineViewModel, navController) }
+            MainView(navController = navController) {
+                HomeView(
+                    creatineViewModel = creatineViewModel,
+                    navController = navController,
+                    userData = userData,
+                    userRegisters = userRegisters,
+                    daysRow = daysRow
+                )
+            }
         }
         composable(route = Screens.CalendarView.name) {
-            val fechasMes1: List<LocalDate> = listOf(
-                LocalDate.of(2023, 10, 1),
-                LocalDate.of(2023, 11, 1),
-                LocalDate.of(2023, 11, 2),
-                LocalDate.of(2024, 1, 1),
-                LocalDate.of(2024, 1, 15),
-                LocalDate.of(2024, 2, 5),
-                LocalDate.of(2024, 3, 10),
-                LocalDate.of(2024, 4, 20),
-                LocalDate.of(2024, 5, 30),
-                LocalDate.of(2024, 6, 25),
-                LocalDate.of(2024, 7, 12),
-                LocalDate.of(2024, 8, 8),
-                LocalDate.of(2024, 9, 17),
-                LocalDate.of(2024, 10, 5),
-                LocalDate.of(2024, 11, 20),
-                LocalDate.of(2024, 12, 29),
-                LocalDate.of(2025, 1, 5)
+
+            /*
+            Warning! The order of the list is important. If it's not ordered
+            it won't work.
+
+            val userRegistersList = listOf<UserRegisters>(
+                UserRegisters(LocalDateTime.of(2023, 3, 15, 10, 30, 0)),
+                UserRegisters(LocalDateTime.of(2023, 8, 15, 10, 30, 0)),
+                UserRegisters(LocalDateTime.of(2023, 10, 15, 10, 30, 0)),
+                UserRegisters(LocalDateTime.of(2023, 11, 15, 10, 30, 0)),
+                UserRegisters(LocalDateTime.of(2023, 12, 15, 10, 30, 0)),
+                UserRegisters(LocalDateTime.of(2024, 1, 15, 10, 30, 0))
             )
 
-            MainView(navController = navController) { CalendarsView(fechasMes1) }
+             */
+
+            val localDateList = if (!(userRegisters.isNullOrEmpty())) {
+                creatineViewModel.returnLocalDateList(userRegisters!!)
+                //creatineViewModel.returnLocalDateList(userRegistersList)
+            } else {
+                emptyList()
+            }
+
+            MainView(navController = navController) { CalendarsView(localDateList) }
         }
         composable(route = Screens.SettingsView.name) {
             MainView(navController = navController) { SettingsView() }
@@ -74,7 +86,15 @@ fun AppNavigation(navController: NavHostController, creatineViewModel: CreatineV
         composable(route = Screens.MainView.name) {
             creatineViewModel.getUserData()
             creatineViewModel.getUserRegisters()
-            MainView(navController = navController) { HomeView(creatineViewModel, navController) }
+            MainView(navController = navController) {
+                HomeView(
+                    creatineViewModel = creatineViewModel,
+                    navController = navController,
+                    userData = userData,
+                    userRegisters = userRegisters,
+                    daysRow = daysRow
+                )
+            }
         }
     }
 }

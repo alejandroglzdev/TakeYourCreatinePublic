@@ -15,6 +15,7 @@ import com.alejandroglzdev.takeyourcreatine.navigation.AppNavigation
 import com.alejandroglzdev.takeyourcreatine.ui.theme.TakeYourCreatineTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -38,8 +39,8 @@ class MainActivity : ComponentActivity() {
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-fun countMonths(register: LocalDate): List<LocalDate> {
-    val datePerMonth = mutableListOf<LocalDate>()
+fun countMonths(register: LocalDateTime): List<LocalDateTime> {
+    val datePerMonth = mutableListOf<LocalDateTime>()
     var todayDate = register
 
     // It looks if the date is before today, because if it's we must add a month
@@ -51,7 +52,7 @@ fun countMonths(register: LocalDate): List<LocalDate> {
     // so it will start adding months. There will be a case, where the date that we were adding up one month
     // will be 20/01/24. So it won't print January's calendar. With this last condition, it'll check that.
 
-    while (todayDate.isBefore(LocalDate.now()) || todayDate.isEqual(LocalDate.now()) || (todayDate.month == LocalDate.now().month && todayDate.year == LocalDate.now().year)) {
+    while (todayDate.isBefore(LocalDateTime.now()) || todayDate.isEqual(LocalDateTime.now()) || (todayDate.month == LocalDate.now().month && todayDate.year == LocalDate.now().year)) {
         datePerMonth.add(todayDate)
         todayDate = todayDate.plusMonths(1)
     }

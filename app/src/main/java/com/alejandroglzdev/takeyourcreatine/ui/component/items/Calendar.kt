@@ -23,11 +23,12 @@ import com.alejandroglzdev.takeyourcreatine.ui.theme.SecondaryDark
 import com.alejandroglzdev.takeyourcreatine.ui.theme.labelSmallAccent
 import com.alejandroglzdev.takeyourcreatine.ui.theme.labelSmallSecondaryDark
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun Calendar(registers: List<LocalDate>, month: LocalDate) {
+fun Calendar(registers: List<LocalDateTime>, month: LocalDate) {
     // Parameter month has a meaning. In the case that a month doesn't have a register, we must print
     // the calendar also. We had (firstDay = registers.first()), so it was crashing because the list
     // was null.
@@ -51,6 +52,7 @@ fun Calendar(registers: List<LocalDate>, month: LocalDate) {
                 .padding(8.dp)
         )
 
+        //val daysInMonth = month.lengthOfMonth()
         val daysInMonth = month.lengthOfMonth()
         val daysOfWeek = listOf("S", "M", "T", "W", "T", "F", "S")
 

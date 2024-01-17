@@ -82,5 +82,10 @@ class CreatineViewModel @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     fun consecutiveDays(registers: List<UserRegisters>): Int {
         return utils.getConsecutiveDaysCount(registers)
+
+    }
+
+    fun returnLocalDateList(registers: List<UserRegisters>): List<LocalDateTime> {
+        return utils.returnLocalDateList(registers)
     }
 }

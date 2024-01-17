@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,6 +24,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import com.alejandroglzdev.takeyourcreatine.CreatineViewModel
 import com.alejandroglzdev.takeyourcreatine.R
+import com.alejandroglzdev.takeyourcreatine.data.database.entities.UserData
 import com.alejandroglzdev.takeyourcreatine.data.database.entities.UserRegisters
 import com.alejandroglzdev.takeyourcreatine.navigation.BottomNavItem
 import com.alejandroglzdev.takeyourcreatine.ui.component.items.AdmobBanner
@@ -35,18 +35,19 @@ import java.time.LocalDateTime
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomeView(creatineViewModel: CreatineViewModel, navController: NavHostController) {
+fun HomeView(
+    creatineViewModel: CreatineViewModel,
+    navController: NavHostController,
+    userData: UserData?,
+    userRegisters: List<UserRegisters>?,
+    daysRow: Int
+) {
     //Creating MutableStates
     var doneToday by remember { mutableStateOf(false) }
     var isEnabled by remember { mutableStateOf(true) }
     var intakeText by remember { mutableStateOf("Your intake for today is 7 grams") }
     var scoopImage by remember { mutableIntStateOf(R.drawable.scoop_triste) }
     var contentDescription by remember { mutableStateOf("Scoop triste") }
-
-    //Get data from DB
-    val userData by creatineViewModel.userData.observeAsState()
-    val userRegisters by creatineViewModel.userRegisters.observeAsState()
-    val daysRow = userRegisters?.let { creatineViewModel.consecutiveDays(it) } ?: 1
 
     //Create todays date for insert
     val today = UserRegisters(LocalDateTime.now())
@@ -58,7 +59,7 @@ fun HomeView(creatineViewModel: CreatineViewModel, navController: NavHostControl
 
     //Checking if the current day is the same as the last saved on BD
     doneToday = if (userRegisters?.isNotEmpty() == true) {
-        creatineViewModel.localDateTimeIsToday(userRegisters?.last()?.register)
+        creatineViewModel.localDateTimeIsToday(userRegisters.last().register)
 
     } else {
         false
