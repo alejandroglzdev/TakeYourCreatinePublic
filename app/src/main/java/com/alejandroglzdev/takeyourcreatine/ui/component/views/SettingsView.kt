@@ -22,7 +22,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavHostController
 import com.alejandroglzdev.takeyourcreatine.R
+import com.alejandroglzdev.takeyourcreatine.navigation.BottomNavItem
 import com.alejandroglzdev.takeyourcreatine.ui.component.items.AdmobBanner
 import com.alejandroglzdev.takeyourcreatine.ui.component.items.SquareButton
 import com.alejandroglzdev.takeyourcreatine.ui.theme.Accent
@@ -32,7 +34,7 @@ import com.alejandroglzdev.takeyourcreatine.ui.theme.SecondaryDark
 import com.alejandroglzdev.takeyourcreatine.ui.theme.headlineMediumAccent
 
 @Composable
-fun SettingsView() {
+fun SettingsView(navController: NavHostController) {
     val checkedState = remember { mutableStateOf(true) }
 
     ConstraintLayout(
@@ -64,7 +66,10 @@ fun SettingsView() {
 
 
                 SquareButton(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                        navController.popBackStack()
+                        navController.navigate(BottomNavItem.Bodyweight.route)
+                    },
                     content = stringResource(R.string.change_creatine_intake),
                     modifier = Modifier
                         .fillMaxWidth()

@@ -9,9 +9,9 @@ class UserDataRepository @Inject constructor(
 ) {
     suspend fun getUserDataFromDatabase(): UserData? {
         val response = userDataDao.getAllUserData()
-        return if (response.isNotEmpty()){
+        return if (response.isNotEmpty()) {
             response.last()
-        }else{
+        } else {
             null
         }
 
@@ -23,5 +23,9 @@ class UserDataRepository @Inject constructor(
 
     suspend fun insertUserData(userData: UserData) {
         userDataDao.insertUserData(userData)
+    }
+
+    suspend fun updateUserData(vararg userData: UserData) {
+        userDataDao.updateUserData(*userData)
     }
 }

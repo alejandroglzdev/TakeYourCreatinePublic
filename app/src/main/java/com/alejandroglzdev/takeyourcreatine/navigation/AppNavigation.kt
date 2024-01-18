@@ -74,7 +74,7 @@ fun AppNavigation(navController: NavHostController, creatineViewModel: CreatineV
             MainView(navController = navController) { CalendarsView(localDateList) }
         }
         composable(route = Screens.SettingsView.name) {
-            MainView(navController = navController) { SettingsView() }
+            MainView(navController = navController) { SettingsView(navController = navController) }
         }
         composable(route = Screens.BodyweightView.name) {
             BodyweightView(

@@ -14,6 +14,7 @@ import com.alejandroglzdev.takeyourcreatine.domain.GetUserDataUseCase
 import com.alejandroglzdev.takeyourcreatine.domain.GetUserRegistersUseCase
 import com.alejandroglzdev.takeyourcreatine.domain.InsertUserDataUseCase
 import com.alejandroglzdev.takeyourcreatine.domain.InsertUserRegistersUseCase
+import com.alejandroglzdev.takeyourcreatine.domain.UpdateUserDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -27,8 +28,14 @@ class CreatineViewModel @Inject constructor(
     private val getUserRegistersUseCase: GetUserRegistersUseCase,
     private val insertUserRegistersUseCase: InsertUserRegistersUseCase,
     private val deleteUserRegistersUseCase: DeleteUserRegistersUseCase,
+    private val updateUserDataUseCase: UpdateUserDataUseCase,
     private val utils: Utils
 ) : ViewModel() {
+
+    //TODO: Implementar dar review en Google Play
+    //TODO: Implementar carga de creatina
+    //TODO: Implementar TimePicker
+    //TODO: Implementar notificaciones
 
     val userData = MutableLiveData<UserData>()
     val userRegisters = MutableLiveData<List<UserRegisters>>()
@@ -42,14 +49,35 @@ class CreatineViewModel @Inject constructor(
         }
     }
 
-    fun insertUserData(userData: UserData) {
-        viewModelScope.launch {
-            deleteUserDataUseCase()
+    fun insertUserData(userDataBD: UserData) {
+        if (userData.value == null) {
+            viewModelScope.launch {
+                deleteUserDataUseCase()
 
-        }
-        viewModelScope.launch {
-            insertUserDataUseCase(userData)
+            }
+            viewModelScope.launch {
+                insertUserDataUseCase(userDataBD)
 
+            }
+        } else {
+            viewModelScope.launch {
+                val intake = userDataBD.creatineIntake
+                val newIntake = if (intake != null) {
+                    (intake * 0.1).toInt()
+                } else {
+                    0
+                }
+
+                val newUserData = UserData(
+                    id = userData.value!!.id,
+                    creatineIntake = newIntake,
+                    onboard = false,
+                    notifications = userData.value!!.notifications
+                )
+
+                updateUserDataUseCase(newUserData)
+
+            }
         }
     }
 
