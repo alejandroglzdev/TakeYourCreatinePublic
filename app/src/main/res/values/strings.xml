@@ -12,4 +12,7 @@
     <string name="congratulation_you_have_been_taking_creatine_for_days_in_a_row">Congratulation! You\nhave been taking creatine for %1$s days\nin a row!</string>
     <string name="happy_scoop">Happy scoop</string>
     <string name="select_hour">"Select hour: "</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="pick_a_time">Pick a time</string>
 </resources>

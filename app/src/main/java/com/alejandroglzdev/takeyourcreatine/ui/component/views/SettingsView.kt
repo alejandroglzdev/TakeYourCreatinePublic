@@ -1,5 +1,7 @@
 package com.alejandroglzdev.takeyourcreatine.ui.component.views
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,14 +16,18 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import com.alejandroglzdev.takeyourcreatine.CreatineViewModel
@@ -35,7 +41,13 @@ import com.alejandroglzdev.takeyourcreatine.ui.theme.Primary
 import com.alejandroglzdev.takeyourcreatine.ui.theme.PrimaryDark
 import com.alejandroglzdev.takeyourcreatine.ui.theme.SecondaryDark
 import com.alejandroglzdev.takeyourcreatine.ui.theme.headlineMediumAccent
+import com.vanpra.composematerialdialogs.MaterialDialog
+import com.vanpra.composematerialdialogs.datetime.time.timepicker
+import com.vanpra.composematerialdialogs.rememberMaterialDialogState
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SettingsView(
     navController: NavHostController,
@@ -44,6 +56,16 @@ fun SettingsView(
 ) {
     val switchsState = userData?.notifications ?: false
     val checkedState = remember { mutableStateOf(switchsState) }
+
+    var pickedTime by remember { mutableStateOf(LocalTime.NOON) }
+    val formattedTime by remember {
+        derivedStateOf {
+            DateTimeFormatter
+                .ofPattern("HH:mm")
+                .format(pickedTime)
+        }
+    }
+    val timeDialogState = rememberMaterialDialogState()
 
 
     ConstraintLayout(
@@ -136,7 +158,7 @@ fun SettingsView(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     SquareButton(
-                        onClick = { /*TODO*/ },
+                        onClick = { timeDialogState.show() },
                         content = stringResource(R.string.select_hour),
                         textAlign = TextAlign.Start,
                         modifier = Modifier
@@ -145,14 +167,34 @@ fun SettingsView(
                     )
 
                     SquareButton(
-                        onClick = { /*TODO*/ },
-                        content = "13:10",
+                        onClick = { timeDialogState.show() },
+                        content = formattedTime,
                         textAlign = TextAlign.Start,
                         modifier = Modifier
                             .weight(0.3f)
                             .padding(start = 8.dp)
                     )
 
+                }
+
+                MaterialDialog(
+                    dialogState = timeDialogState,
+                    properties = DialogProperties(
+                        dismissOnClickOutside = true
+                    ),
+                    buttons = {
+                        positiveButton(text = stringResource(R.string.ok))
+                        negativeButton(text = stringResource(R.string.cancel))
+                    },
+                    onCloseRequest = {}
+                ) {
+                    timepicker(
+                        initialTime = LocalTime.NOON,
+                        title = stringResource(R.string.pick_a_time),
+                        timeRange = LocalTime.MIN..LocalTime.MAX
+                    ) {
+                        pickedTime = it
+                    }
                 }
 
             }
