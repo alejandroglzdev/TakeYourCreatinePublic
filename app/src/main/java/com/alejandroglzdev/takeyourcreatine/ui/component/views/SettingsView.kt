@@ -23,7 +23,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
+import com.alejandroglzdev.takeyourcreatine.CreatineViewModel
 import com.alejandroglzdev.takeyourcreatine.R
+import com.alejandroglzdev.takeyourcreatine.data.database.entities.UserData
 import com.alejandroglzdev.takeyourcreatine.navigation.BottomNavItem
 import com.alejandroglzdev.takeyourcreatine.ui.component.items.AdmobBanner
 import com.alejandroglzdev.takeyourcreatine.ui.component.items.SquareButton
@@ -34,8 +36,14 @@ import com.alejandroglzdev.takeyourcreatine.ui.theme.SecondaryDark
 import com.alejandroglzdev.takeyourcreatine.ui.theme.headlineMediumAccent
 
 @Composable
-fun SettingsView(navController: NavHostController) {
-    val checkedState = remember { mutableStateOf(true) }
+fun SettingsView(
+    navController: NavHostController,
+    userData: UserData?,
+    creatineViewModel: CreatineViewModel
+) {
+    val switchsState = userData?.notifications ?: false
+    val checkedState = remember { mutableStateOf(switchsState) }
+
 
     ConstraintLayout(
         Modifier
@@ -96,7 +104,16 @@ fun SettingsView(navController: NavHostController) {
 
                     Switch(
                         checked = checkedState.value,
-                        onCheckedChange = { checkedState.value = it },
+                        onCheckedChange = {
+                            checkedState.value = it
+                            val newUserData = UserData(
+                                notifications = it,
+                                onboard = userData?.onboard,
+                                creatineIntake = userData?.creatineIntake,
+                                id = userData?.id
+                            )
+                            creatineViewModel.updateNotifications(newUserData)
+                        },
                         modifier = Modifier
                             .weight(0.3f)
                             .scale(0.6f),

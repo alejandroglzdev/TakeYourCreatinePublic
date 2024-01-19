@@ -49,7 +49,7 @@ class CreatineViewModel @Inject constructor(
         }
     }
 
-    fun insertUserData(userDataBD: UserData) {
+    fun insertCreatineIntake(userDataBD: UserData) {
         if (userData.value == null) {
             viewModelScope.launch {
                 deleteUserDataUseCase()
@@ -75,7 +75,7 @@ class CreatineViewModel @Inject constructor(
                     notifications = userData.value!!.notifications
                 )
 
-                updateUserDataUseCase(newUserData)
+                updateUserData(newUserData)
 
             }
         }
@@ -100,6 +100,17 @@ class CreatineViewModel @Inject constructor(
         viewModelScope.launch {
             deleteUserRegistersUseCase()
         }
+    }
+
+    private fun updateUserData(userData: UserData) {
+        viewModelScope.launch {
+            updateUserDataUseCase(userData)
+        }
+    }
+
+    fun updateNotifications(userData: UserData) {
+        updateUserData(userData)
+        getUserData()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

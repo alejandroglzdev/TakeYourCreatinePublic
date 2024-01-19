@@ -110,7 +110,7 @@ fun BodyweightView(
                         onboard = false,
                         creatineIntake = text.toInt()
                     )
-                    composableScope.launch { creatineViewModel.insertUserData(userData) }
+                    composableScope.launch { creatineViewModel.insertCreatineIntake(userData) }
 
                     navController.popBackStack()
                     navController.navigate(BottomNavItem.MainView.route)
