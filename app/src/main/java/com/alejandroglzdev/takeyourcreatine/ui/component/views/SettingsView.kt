@@ -27,7 +27,6 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.DialogProperties
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import com.alejandroglzdev.takeyourcreatine.CreatineViewModel
@@ -54,10 +53,10 @@ fun SettingsView(
     userData: UserData?,
     creatineViewModel: CreatineViewModel
 ) {
-    val switchsState = userData?.notifications ?: false
-    val checkedState = remember { mutableStateOf(switchsState) }
+    val switchState = userData?.notifications ?: false
+    val checkedState = remember { mutableStateOf(switchState) }
 
-    var pickedTime by remember { mutableStateOf(LocalTime.NOON) }
+    var pickedTime by remember { mutableStateOf(userData?.hour ?: LocalTime.NOON) }
     val formattedTime by remember {
         derivedStateOf {
             DateTimeFormatter
@@ -134,9 +133,10 @@ fun SettingsView(
                                 notifications = it,
                                 onboard = userData?.onboard,
                                 creatineIntake = userData?.creatineIntake,
+                                hour = userData?.hour,
                                 id = userData?.id
                             )
-                            creatineViewModel.updateNotifications(newUserData)
+                            creatineViewModel.updateUserDataAndReloadData(newUserData)
                         },
                         modifier = Modifier
                             .weight(0.3f)
@@ -178,14 +178,19 @@ fun SettingsView(
 
                 MaterialDialog(
                     dialogState = timeDialogState,
-                    properties = DialogProperties(
-                        dismissOnClickOutside = true
-                    ),
                     buttons = {
-                        positiveButton(text = stringResource(R.string.ok))
+                        positiveButton(text = stringResource(R.string.ok)) {
+                            val newUserData = UserData(
+                                notifications = userData?.notifications,
+                                onboard = userData?.onboard,
+                                creatineIntake = userData?.creatineIntake,
+                                hour = pickedTime,
+                                id = userData?.id
+                            )
+                            creatineViewModel.updateUserDataAndReloadData(newUserData)
+                        }
                         negativeButton(text = stringResource(R.string.cancel))
                     },
-                    onCloseRequest = {}
                 ) {
                     timepicker(
                         initialTime = LocalTime.NOON,
@@ -199,7 +204,6 @@ fun SettingsView(
             }
 
         }
-
 
         Box(modifier = Modifier.constrainAs(adBox) {
             bottom.linkTo(parent.bottom)

@@ -72,7 +72,8 @@ class CreatineViewModel @Inject constructor(
                     id = userData.value!!.id,
                     creatineIntake = newIntake,
                     onboard = false,
-                    notifications = userData.value!!.notifications
+                    notifications = userData.value!!.notifications,
+                    hour = userData.value!!.hour
                 )
 
                 updateUserData(newUserData)
@@ -108,7 +109,7 @@ class CreatineViewModel @Inject constructor(
         }
     }
 
-    fun updateNotifications(userData: UserData) {
+    fun updateUserDataAndReloadData(userData: UserData) {
         updateUserData(userData)
         getUserData()
     }
