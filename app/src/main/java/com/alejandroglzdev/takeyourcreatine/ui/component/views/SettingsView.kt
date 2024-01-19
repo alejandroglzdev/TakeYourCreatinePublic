@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
@@ -88,8 +89,10 @@ fun SettingsView(
 
                 Row(
                     modifier = Modifier
+                        .padding(bottom = 4.dp)
                         .background(SecondaryDark)
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .height(40.dp),
                     verticalAlignment = Alignment.CenterVertically
                 )
                 {
@@ -123,6 +126,31 @@ fun SettingsView(
                             checkedBorderColor = Accent
                         )
 
+                    )
+
+                }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    SquareButton(
+                        onClick = { /*TODO*/ },
+                        content = stringResource(R.string.select_hour),
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier
+                            .weight(0.7f)
+                            .padding(end = 8.dp)
+                    )
+
+                    SquareButton(
+                        onClick = { /*TODO*/ },
+                        content = "13:10",
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier
+                            .weight(0.3f)
+                            .padding(start = 8.dp)
                     )
 
                 }
