@@ -30,7 +30,12 @@ fun CalendarsView(registers: List<LocalDateTime>) {
             .fillMaxSize()
     ) {
         val (column, adBox) = createRefs()
-        val registersOnePerMonth = countMonths(registers.first())
+        val firstRegister = if (registers.isNotEmpty()) {
+            registers.first()
+        } else {
+            LocalDateTime.now()
+        }
+        val registersOnePerMonth = countMonths(firstRegister)
         Column(
             Modifier
                 .verticalScroll(rememberScrollState())
@@ -45,6 +50,7 @@ fun CalendarsView(registers: List<LocalDateTime>) {
                 //So now, we filter the list again, just to know the days that belong to the month that we are working with
                 val registersMonthly =
                     registers.filter { it.month == registersOnePerMonth.month && it.year == registersOnePerMonth.year }
+
                 Calendar(registers = registersMonthly, registersOnePerMonth.toLocalDate())
             }
 

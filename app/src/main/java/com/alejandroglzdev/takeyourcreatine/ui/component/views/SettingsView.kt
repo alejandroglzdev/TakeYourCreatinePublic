@@ -95,7 +95,6 @@ fun SettingsView(
                     modifier = Modifier.fillMaxHeight(0.4f)
                 )
 
-
                 SquareButton(
                     onClick = {
                         navController.popBackStack()
