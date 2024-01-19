@@ -32,10 +32,10 @@ class CreatineViewModel @Inject constructor(
     private val utils: Utils
 ) : ViewModel() {
 
+    //TODO: Implementar que si las notificaciones no estan activadas no te deje usar el time picker
+    //TODO: Implementar notificaciones
     //TODO: Implementar dar review en Google Play
     //TODO: Implementar carga de creatina
-    //TODO: Implementar TimePicker
-    //TODO: Implementar notificaciones
 
     val userData = MutableLiveData<UserData>()
     val userRegisters = MutableLiveData<List<UserRegisters>>()
