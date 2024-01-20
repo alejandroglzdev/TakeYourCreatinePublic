@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -27,7 +28,13 @@ fun SquareButton(
         .fillMaxWidth()
         .padding(start = 24.dp, end = 24.dp),
     textAlign: TextAlign = TextAlign.Center,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    colors: ButtonColors = ButtonDefaults.buttonColors(
+        containerColor = SecondaryDark,
+        contentColor = Accent,
+        disabledContainerColor = SecondaryDark,
+        disabledContentColor = Accent
+    )
 ) {
     val squareShape = object : Shape {
         override fun createOutline(
@@ -43,12 +50,7 @@ fun SquareButton(
     Button(
         onClick = { onClick() },
         shape = squareShape,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = SecondaryDark,
-            contentColor = Accent,
-            disabledContainerColor = SecondaryDark,
-            disabledContentColor = Accent
-        ),
+        colors = colors,
         modifier = modifier,
         contentPadding = PaddingValues(0.dp),
         enabled = enabled

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -55,6 +56,23 @@ fun SettingsView(
 ) {
     val switchState = userData?.notifications ?: false
     val checkedState = remember { mutableStateOf(switchState) }
+
+    val colors = if (checkedState.value) {
+        ButtonDefaults.buttonColors(
+            containerColor = SecondaryDark,
+            contentColor = Accent,
+            disabledContainerColor = SecondaryDark,
+            disabledContentColor = Accent
+        )
+    } else {
+        ButtonDefaults.buttonColors(
+            containerColor = SecondaryDark.copy(alpha = 0.5f),
+            contentColor = Accent.copy(alpha = 0.5f),
+            disabledContainerColor = SecondaryDark.copy(alpha = 0.5f),
+            disabledContentColor = Accent.copy(alpha = 0.5f)
+        )
+
+    }
 
     var pickedTime by remember { mutableStateOf(userData?.hour ?: LocalTime.NOON) }
     val formattedTime by remember {
@@ -160,6 +178,8 @@ fun SettingsView(
                         onClick = { timeDialogState.show() },
                         content = stringResource(R.string.select_hour),
                         textAlign = TextAlign.Start,
+                        enabled = switchState,
+                        colors = colors,
                         modifier = Modifier
                             .weight(0.7f)
                             .padding(end = 8.dp)
@@ -169,6 +189,8 @@ fun SettingsView(
                         onClick = { timeDialogState.show() },
                         content = formattedTime,
                         textAlign = TextAlign.Start,
+                        enabled = switchState,
+                        colors = colors,
                         modifier = Modifier
                             .weight(0.3f)
                             .padding(start = 8.dp)
