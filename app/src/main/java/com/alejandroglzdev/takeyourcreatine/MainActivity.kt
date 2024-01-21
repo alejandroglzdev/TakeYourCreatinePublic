@@ -1,5 +1,7 @@
 package com.alejandroglzdev.takeyourcreatine
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,8 +11,14 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.compose.rememberNavController
+import com.alejandroglzdev.takeyourcreatine.MainActivity.Companion.MY_CHANNEL_ID
 import com.alejandroglzdev.takeyourcreatine.navigation.AppNavigation
 import com.alejandroglzdev.takeyourcreatine.ui.theme.TakeYourCreatineTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,6 +28,11 @@ import java.time.LocalDateTime
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val creatineViewModel: CreatineViewModel by viewModels()
+
+    companion object {
+        const val MY_CHANNEL_ID = "myChannel"
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,4 +71,32 @@ fun countMonths(register: LocalDateTime): List<LocalDateTime> {
     }
 
     return datePerMonth
+}
+
+@Composable
+fun createSimpleNotification() {
+    var builder = NotificationCompat.Builder(LocalContext.current, MY_CHANNEL_ID)
+        .setSmallIcon(android.R.drawable.ic_menu_close_clear_cancel)
+        .setContentTitle("MyNotification")
+        .setContentText("MyBody")
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+    with(NotificationManagerCompat.from(LocalContext.current)) {
+        if (ActivityCompat.checkSelfPermission(
+                LocalContext.current,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            ActivityCompat.requestPermissions()
+            return
+        }
+        notify(1, builder.build())
+    }
 }

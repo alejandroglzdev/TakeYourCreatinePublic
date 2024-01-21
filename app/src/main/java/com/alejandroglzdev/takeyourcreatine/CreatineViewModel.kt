@@ -32,6 +32,7 @@ class CreatineViewModel @Inject constructor(
     private val utils: Utils
 ) : ViewModel() {
 
+    //TODO: Cambiar manifest para api 26
     //TODO: Implementar notificaciones
     //TODO: Implementar dar review en Google Play
     //TODO: Implementar carga de creatina
