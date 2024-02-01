@@ -12,7 +12,6 @@ import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContextCompat.startActivity
 import com.alejandroglzdev.takeyourcreatine.CreatineViewModel
 import com.alejandroglzdev.takeyourcreatine.data.database.entities.UserRegisters
 import com.alejandroglzdev.takeyourcreatine.data.notifications.NotificationPermissionTextProvider
@@ -65,8 +64,9 @@ class Utils @Inject constructor() {
 
         return localDateList.toList()
     }
+    //@RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @Composable
-    fun a(creatineViewModel: CreatineViewModel) {
+    fun ShowNotificationsDialog(creatineViewModel: CreatineViewModel) {
         val context = LocalContext.current as Activity
         val permissionsToRequest = arrayOf(
             Manifest.permission.POST_NOTIFICATIONS
@@ -124,7 +124,6 @@ class Utils @Inject constructor() {
                             Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                             Uri.fromParts("package", context.packageName, null)
                         )
-                        //FUNCIONA!!
                         context.startActivity(intent)
                     })
             }

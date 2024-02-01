@@ -146,9 +146,8 @@ class CreatineViewModel @Inject constructor(
         return utils.returnLocalDateList(registers)
     }
 
-    //Intentado llamar al metodo de utils aqui
     @Composable
-    fun showNotificationsDialogue() {
-        utils.a(creatineViewModel = this)
+    fun ShowNotificationsDialogue() {
+        utils.ShowNotificationsDialog(creatineViewModel = this)
     }
 }
