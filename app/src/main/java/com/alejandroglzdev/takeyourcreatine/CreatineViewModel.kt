@@ -2,6 +2,8 @@ package com.alejandroglzdev.takeyourcreatine
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -36,6 +38,21 @@ class CreatineViewModel @Inject constructor(
     //TODO: Implementar notificaciones
     //TODO: Implementar dar review en Google Play
     //TODO: Implementar carga de creatina
+
+    val visiblePermissionDialogQueue = mutableStateListOf<String>()
+
+    fun dismissDialog() {
+        visiblePermissionDialogQueue.removeFirst()
+    }
+
+    fun onPermissionResult(
+        permission: String,
+        isGranted: Boolean
+    ) {
+        if (!isGranted && !visiblePermissionDialogQueue.contains(permission)) {
+            visiblePermissionDialogQueue.add(permission)
+        }
+    }
 
     val userData = MutableLiveData<UserData>()
     val userRegisters = MutableLiveData<List<UserRegisters>>()
@@ -127,5 +144,11 @@ class CreatineViewModel @Inject constructor(
 
     fun returnLocalDateList(registers: List<UserRegisters>): List<LocalDateTime> {
         return utils.returnLocalDateList(registers)
+    }
+
+    //Intentado llamar al metodo de utils aqui
+    @Composable
+    fun showNotificationsDialogue() {
+        utils.a(creatineViewModel = this)
     }
 }

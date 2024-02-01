@@ -1,17 +1,23 @@
 package com.alejandroglzdev.takeyourcreatine
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
@@ -19,7 +25,9 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.compose.rememberNavController
 import com.alejandroglzdev.takeyourcreatine.MainActivity.Companion.MY_CHANNEL_ID
+import com.alejandroglzdev.takeyourcreatine.data.notifications.NotificationPermissionTextProvider
 import com.alejandroglzdev.takeyourcreatine.navigation.AppNavigation
+import com.alejandroglzdev.takeyourcreatine.ui.component.items.PermissionDialog
 import com.alejandroglzdev.takeyourcreatine.ui.theme.TakeYourCreatineTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
@@ -28,6 +36,9 @@ import java.time.LocalDateTime
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val creatineViewModel: CreatineViewModel by viewModels()
+    private val permissionsToRequest = arrayOf(
+        Manifest.permission.POST_NOTIFICATIONS
+    )
 
     companion object {
         const val MY_CHANNEL_ID = "myChannel"
@@ -39,6 +50,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             TakeYourCreatineTheme {
                 val navController = rememberNavController()
+
                 //InsertUserDataUseCase(UserData(onboard = true, notifications = true, creatineIntake = 7))
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -46,7 +58,70 @@ class MainActivity : ComponentActivity() {
                 ) {
                     AppNavigation(navController, creatineViewModel)
                 }
+
+                /*
+
+El dialogo. Aqui funciona
+
+                val dialogQueue = creatineViewModel.visiblePermissionDialogQueue
+                val notificationPermissionResultLauncher = rememberLauncherForActivityResult(
+                    contract = ActivityResultContracts.RequestPermission(),
+                    onResult = { isGranted ->
+                        creatineViewModel.onPermissionResult(
+                            permission = Manifest.permission.POST_NOTIFICATIONS,
+                            isGranted = isGranted
+                        )
+                    }
+                )
+
+                val multiplePermissionResultLauncher = rememberLauncherForActivityResult(
+                    contract = ActivityResultContracts.RequestMultiplePermissions(),
+                    onResult = { perms ->
+                        permissionsToRequest.forEach {permission ->
+                            creatineViewModel.onPermissionResult(
+                                permission = permission,
+                                isGranted = perms[permission] == true
+                            )
+
+                        }
+                    }
+                )
+
+                LaunchedEffect(Unit) {
+                    notificationPermissionResultLauncher.launch(
+                        Manifest.permission.POST_NOTIFICATIONS
+                    )
+                }
+
+                dialogQueue
+                    .reversed()
+                    .forEach { permission ->
+                        PermissionDialog(
+                            permissionTextProvider = when (permission) {
+                                Manifest.permission.POST_NOTIFICATIONS -> NotificationPermissionTextProvider()
+                                else -> return@forEach
+                            },
+                            isPermanentlyDeclined = true
+                            ,
+                            onDismiss = { creatineViewModel.dismissDialog() },
+                            onOkClick = {
+                                creatineViewModel.dismissDialog()
+                                multiplePermissionResultLauncher.launch(
+                                    arrayOf(permission)
+                                )
+                            },
+                            onGoToAppSettingsClick = {
+                                Intent(
+                                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                    Uri.fromParts("package", packageName, null)
+                                ).also(::startActivity)
+                            })
+                    }
+                    */
+
             }
+
+
         }
     }
 }
@@ -94,7 +169,7 @@ fun createSimpleNotification() {
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            ActivityCompat.requestPermissions()
+            //ActivityCompat.requestPermissions()
             return
         }
         notify(1, builder.build())

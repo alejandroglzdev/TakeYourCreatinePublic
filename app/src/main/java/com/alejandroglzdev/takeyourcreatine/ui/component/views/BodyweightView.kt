@@ -58,6 +58,8 @@ fun BodyweightView(
         ) {
         val (box, adBox) = createRefs()
 
+        if (welcome) creatineViewModel.showNotificationsDialogue()
+
         Box(modifier = Modifier
             .fillMaxHeight(0.55f)
             .fillMaxWidth(0.8f)
