@@ -57,6 +57,8 @@ fun SettingsView(
     val switchState = userData?.notifications ?: false
     val checkedState = remember { mutableStateOf(switchState) }
 
+    if(checkedState.value) creatineViewModel.ShowNotificationsDialogue()
+
     val colors = if (checkedState.value) {
         ButtonDefaults.buttonColors(
             containerColor = SecondaryDark,

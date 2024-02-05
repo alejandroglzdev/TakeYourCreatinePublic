@@ -125,6 +125,7 @@ class Utils @Inject constructor() {
                             Uri.fromParts("package", context.packageName, null)
                         )
                         context.startActivity(intent)
+                        creatineViewModel.dismissDialog()
                     })
             }
     }
