@@ -33,6 +33,7 @@ import androidx.navigation.NavHostController
 import com.alejandroglzdev.takeyourcreatine.CreatineViewModel
 import com.alejandroglzdev.takeyourcreatine.R
 import com.alejandroglzdev.takeyourcreatine.data.database.entities.UserData
+import com.alejandroglzdev.takeyourcreatine.domain.ReminderManager
 import com.alejandroglzdev.takeyourcreatine.navigation.BottomNavItem
 import com.alejandroglzdev.takeyourcreatine.ui.component.items.AdmobBanner
 import com.alejandroglzdev.takeyourcreatine.ui.component.items.SquareButton
@@ -47,17 +48,18 @@ import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-@RequiresApi(Build.VERSION_CODES.O)
+@RequiresApi(Build.VERSION_CODES.S)
 @Composable
 fun SettingsView(
     navController: NavHostController,
     userData: UserData?,
-    creatineViewModel: CreatineViewModel
+    creatineViewModel: CreatineViewModel,
+    reminderManager: ReminderManager
 ) {
     val switchState = userData?.notifications ?: false
     val checkedState = remember { mutableStateOf(switchState) }
 
-    if(checkedState.value) creatineViewModel.ShowNotificationsDialogue()
+    if (checkedState.value) creatineViewModel.ShowNotificationsDialogue()
 
     val colors = if (checkedState.value) {
         ButtonDefaults.buttonColors(
@@ -137,7 +139,7 @@ fun SettingsView(
                 )
                 {
                     Text(
-                        text = "Notifications",
+                        text = stringResource(R.string.notifications),
                         style = MaterialTheme.typography.labelSmall,
                         modifier = Modifier
                             .weight(0.7f)
@@ -157,6 +159,12 @@ fun SettingsView(
                                 id = userData?.id
                             )
                             creatineViewModel.updateUserDataAndReloadData(newUserData)
+
+                            if (it) {
+                                reminderManager.startReminder()
+                            } else {
+
+                            }
                         },
                         modifier = Modifier
                             .weight(0.3f)

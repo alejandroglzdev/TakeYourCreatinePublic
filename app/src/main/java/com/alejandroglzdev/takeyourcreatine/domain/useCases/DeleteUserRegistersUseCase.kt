@@ -1,4 +1,4 @@
-package com.alejandroglzdev.takeyourcreatine.domain
+package com.alejandroglzdev.takeyourcreatine.domain.useCases
 
 import com.alejandroglzdev.takeyourcreatine.data.UserRegistersRepository
 import javax.inject.Inject

@@ -9,15 +9,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.alejandroglzdev.takeyourcreatine.CreatineViewModel
+import com.alejandroglzdev.takeyourcreatine.domain.ReminderManager
 import com.alejandroglzdev.takeyourcreatine.ui.component.views.BodyweightView
 import com.alejandroglzdev.takeyourcreatine.ui.component.views.CalendarsView
 import com.alejandroglzdev.takeyourcreatine.ui.component.views.HomeView
 import com.alejandroglzdev.takeyourcreatine.ui.component.views.MainView
 import com.alejandroglzdev.takeyourcreatine.ui.component.views.SettingsView
 
-@RequiresApi(Build.VERSION_CODES.O)
+@RequiresApi(Build.VERSION_CODES.S)
 @Composable
-fun AppNavigation(navController: NavHostController, creatineViewModel: CreatineViewModel) {
+fun AppNavigation(navController: NavHostController, creatineViewModel: CreatineViewModel, reminderManager: ReminderManager) {
     creatineViewModel.getUserData()
     creatineViewModel.getUserRegisters()
     val userData by creatineViewModel.userData.observeAsState()
@@ -78,7 +79,8 @@ fun AppNavigation(navController: NavHostController, creatineViewModel: CreatineV
                 SettingsView(
                     navController = navController,
                     userData = userData,
-                    creatineViewModel = creatineViewModel
+                    creatineViewModel = creatineViewModel,
+                    reminderManager = reminderManager
                 )
             }
         }

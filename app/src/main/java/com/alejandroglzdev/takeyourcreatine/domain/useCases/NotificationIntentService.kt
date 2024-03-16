@@ -1,4 +1,4 @@
-package com.alejandroglzdev.takeyourcreatine.domain
+package com.alejandroglzdev.takeyourcreatine.domain.useCases
 
 import android.content.BroadcastReceiver
 import android.content.Context
