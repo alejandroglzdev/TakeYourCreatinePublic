@@ -11,7 +11,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.alejandroglzdev.takeyourcreatine.MainActivity
 
-class AlarmReceiver(): BroadcastReceiver(){
+class AlarmReceiver() : BroadcastReceiver() {
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onReceive(context: Context, intent: Intent) {
         val notificationManager = ContextCompat.getSystemService(
@@ -44,12 +44,12 @@ fun NotificationManager.sendReminderNotification(
         PendingIntent.FLAG_UPDATE_CURRENT
     )
     val builder = NotificationCompat.Builder(applicationContext, channelId)
-        .setContentTitle("MyNotification")
-        .setContentText("MyBody")
+        .setContentTitle("It's time to maximize your workout!")
+        .setContentText("Don't forget to take your creatine! Keep pushing!")
         .setSmallIcon(android.R.drawable.ic_menu_close_clear_cancel)
         .setStyle(
             NotificationCompat.BigTextStyle()
-                .bigText("Content Text largo...\nContent Text largo...\nContent Text largo...\nContent Text largo...\n")
+                .bigText("Don't forget to take your daily dose of creatine to boost your performance and reach your fitness goals. Remember, each dose brings you closer to smashing your personal records. Don't miss out on this opportunity to push your limits and dominate your workouts!")
         )
         .setContentIntent(pendingIntent)
         .setAutoCancel(true)

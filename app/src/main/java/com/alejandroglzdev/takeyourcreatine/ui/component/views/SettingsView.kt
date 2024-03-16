@@ -161,9 +161,9 @@ fun SettingsView(
                             creatineViewModel.updateUserDataAndReloadData(newUserData)
 
                             if (it) {
-                                reminderManager.startReminder()
+                                reminderManager.startReminder(pickedTime.toString())
                             } else {
-
+                                reminderManager.stopReminder()
                             }
                         },
                         modifier = Modifier
@@ -196,7 +196,9 @@ fun SettingsView(
                     )
 
                     SquareButton(
-                        onClick = { timeDialogState.show() },
+                        onClick = {
+                            timeDialogState.show()
+                        },
                         content = formattedTime,
                         textAlign = TextAlign.Start,
                         enabled = switchState,
@@ -220,6 +222,11 @@ fun SettingsView(
                                 id = userData?.id
                             )
                             creatineViewModel.updateUserDataAndReloadData(newUserData)
+
+                            if(switchState) {
+                                reminderManager.startReminder(pickedTime.toString())
+                            }
+
                         }
                         negativeButton(text = stringResource(R.string.cancel))
                     },
