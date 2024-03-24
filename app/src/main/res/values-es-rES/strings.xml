@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TakeYourCreatine</string>
+    <string name="takeyourcreatine">TakeYourCreatine</string>
+    <string name="sad_scoop">Scoop triste</string>
+    <string name="settings">Ajustes</string>
+    <string name="take_your_creatine">Take your creatine!</string>
+    <string name="change_creatine_intake">Modificar dosis de creatina.</string>
+    <string name="welcome_let_s_get_started">¡Bienvenido!\\nVamos a\\ncomenzar</string>
+    <string name="submit">Aceptar</string>
+    <string name="change_your_creatine_intake">Modificar dosis de creatina.</string>
+    <string name="your_intake_for_today_is_grams">Your inTu dosis para hoy es de %1$s gramos.</string>
+    <string name="congratulation_you_have_been_taking_creatine_for_days_in_a_row">¡Felicidades! ¡Has estado tomando creatina %1$s día/s seguidos!</string>
+    <string name="happy_scoop">Scoop feliz</string>
+    <string name="select_hour">"Seleccione una hora: "</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancelar</string>
+    <string name="pick_a_time">"Seleccione una hora: "</string>
+    <string name="notifications">Notifiaciones</string>
+</resources>
