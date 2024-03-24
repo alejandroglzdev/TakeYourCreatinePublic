@@ -147,7 +147,7 @@ fun HomeView(
             start.linkTo(parent.start)
             end.linkTo(parent.end)
         }) {
-            AdmobBanner(padding = 50.dp, banner = "ca-app-pub-3940256099942544/6300978111")
+            AdmobBanner(padding = 50.dp, banner = "ca-app-pub-3976631583971768/3517671009")
         }
     }
 
