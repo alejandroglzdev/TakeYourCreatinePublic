@@ -1,4 +1,4 @@
-package com.alejandroglzdev.takeyourcreatine.domain
+package com.alejandroglzdev.takeyourcreatine.domain.useCases
 
 import com.alejandroglzdev.takeyourcreatine.data.UserDataRepository
 import com.alejandroglzdev.takeyourcreatine.data.database.entities.UserData

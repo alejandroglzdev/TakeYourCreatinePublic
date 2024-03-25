@@ -1,20 +1,26 @@
 package com.alejandroglzdev.takeyourcreatine
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alejandroglzdev.takeyourcreatine.core.Utils
 import com.alejandroglzdev.takeyourcreatine.data.database.entities.UserData
 import com.alejandroglzdev.takeyourcreatine.data.database.entities.UserRegisters
-import com.alejandroglzdev.takeyourcreatine.domain.DeleteUserDataUseCase
-import com.alejandroglzdev.takeyourcreatine.domain.DeleteUserRegistersUseCase
-import com.alejandroglzdev.takeyourcreatine.domain.GetUserDataUseCase
-import com.alejandroglzdev.takeyourcreatine.domain.GetUserRegistersUseCase
-import com.alejandroglzdev.takeyourcreatine.domain.InsertUserDataUseCase
-import com.alejandroglzdev.takeyourcreatine.domain.InsertUserRegistersUseCase
-import com.alejandroglzdev.takeyourcreatine.domain.UpdateUserDataUseCase
+import com.alejandroglzdev.takeyourcreatine.domain.useCases.DeleteUserDataUseCase
+import com.alejandroglzdev.takeyourcreatine.domain.useCases.DeleteUserRegistersUseCase
+import com.alejandroglzdev.takeyourcreatine.domain.useCases.GetUserDataUseCase
+import com.alejandroglzdev.takeyourcreatine.domain.useCases.GetUserRegistersUseCase
+import com.alejandroglzdev.takeyourcreatine.domain.useCases.InsertUserDataUseCase
+import com.alejandroglzdev.takeyourcreatine.domain.useCases.InsertUserRegistersUseCase
+import com.alejandroglzdev.takeyourcreatine.domain.useCases.UpdateUserDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -32,9 +38,25 @@ class CreatineViewModel @Inject constructor(
     private val utils: Utils
 ) : ViewModel() {
 
+    //TODO: Cambiar manifest para api 26
     //TODO: Implementar notificaciones
     //TODO: Implementar dar review en Google Play
     //TODO: Implementar carga de creatina
+
+    val visiblePermissionDialogQueue = mutableStateListOf<String>()
+
+    fun dismissDialog() {
+        visiblePermissionDialogQueue.removeFirst()
+    }
+
+    fun onPermissionResult(
+        permission: String,
+        isGranted: Boolean
+    ) {
+        if (!isGranted && !visiblePermissionDialogQueue.contains(permission)) {
+            visiblePermissionDialogQueue.add(permission)
+        }
+    }
 
     val userData = MutableLiveData<UserData>()
     val userRegisters = MutableLiveData<List<UserRegisters>>()
@@ -126,5 +148,10 @@ class CreatineViewModel @Inject constructor(
 
     fun returnLocalDateList(registers: List<UserRegisters>): List<LocalDateTime> {
         return utils.returnLocalDateList(registers)
+    }
+
+    @Composable
+    fun ShowNotificationsDialogue() {
+        utils.ShowNotificationsDialog(creatineViewModel = this)
     }
 }

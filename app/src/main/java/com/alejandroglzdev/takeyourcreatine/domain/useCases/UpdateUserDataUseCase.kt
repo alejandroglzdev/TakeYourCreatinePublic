@@ -1,13 +1,13 @@
-package com.alejandroglzdev.takeyourcreatine.domain
+package com.alejandroglzdev.takeyourcreatine.domain.useCases
 
 import com.alejandroglzdev.takeyourcreatine.data.UserDataRepository
 import com.alejandroglzdev.takeyourcreatine.data.database.entities.UserData
 import javax.inject.Inject
 
-class GetUserDataUseCase @Inject constructor(
+class UpdateUserDataUseCase @Inject constructor(
     private val userDataRepository: UserDataRepository
 ) {
-    suspend operator fun invoke(): UserData? {
-        return userDataRepository.getUserDataFromDatabase()
+    suspend operator fun invoke(vararg userData: UserData) {
+        userDataRepository.updateUserData(*userData)
     }
 }

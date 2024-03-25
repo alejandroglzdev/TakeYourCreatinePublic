@@ -1,5 +1,7 @@
 package com.alejandroglzdev.takeyourcreatine
 
+import android.Manifest
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +12,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
+import com.alejandroglzdev.takeyourcreatine.domain.ReminderManager
 import com.alejandroglzdev.takeyourcreatine.navigation.AppNavigation
 import com.alejandroglzdev.takeyourcreatine.ui.theme.TakeYourCreatineTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,7 +24,12 @@ import java.time.LocalDateTime
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val creatineViewModel: CreatineViewModel by viewModels()
-    @RequiresApi(Build.VERSION_CODES.O)
+    private val permissionsToRequest = arrayOf(
+        Manifest.permission.POST_NOTIFICATIONS
+    )
+    lateinit var context: Context
+
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -31,13 +40,18 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    AppNavigation(navController, creatineViewModel)
+                    context = LocalContext.current
+                    val reminderManager = ReminderManager(context)
+
+                    AppNavigation(navController, creatineViewModel, reminderManager)
                 }
             }
         }
-    }
-}
 
+    }
+
+
+}
 @RequiresApi(Build.VERSION_CODES.O)
 fun countMonths(register: LocalDateTime): List<LocalDateTime> {
     val datePerMonth = mutableListOf<LocalDateTime>()
